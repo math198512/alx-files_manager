@@ -52,10 +52,8 @@ class RedisClient {
     try {
       // Store the key-value pair with the specified expiration
       await this.client.setex(key, duration, value);
-      return true;
     } catch (error) {
       console.error('Error setting value in Redis:', error);
-      return false;
     }
   }
 
