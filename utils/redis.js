@@ -34,14 +34,7 @@ class RedisClient {
    * @returns {String | Object}
    */
   async get(key) {
-    return new Promise((resolve, reject) => {
-      this.client.get(key, (err, reply) => {
-        if (err) {
-          return reject(err);
-        }
-        resolve(reply);
-      });
-    });
+    return promisify(this.client.GET).bind(this.client)(key);
   }
 
   /**
