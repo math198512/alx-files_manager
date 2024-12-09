@@ -1,10 +1,12 @@
-const express = require('express');
-const AppController = require('../controllers/AppController');
+// eslint-disable-next-line no-unused-vars
+import { Router } from 'express';
 
-const router = express.Router();
+import { getStatus, getStats } from '../controllers/AppController';
+
+const router = Router();
 
 // Define routes
-router.get('/status', AppController.getStatus);
-router.get('/stats', AppController.getStats);
+router.get('/status', getStatus);
+router.get('/stats', getStats);
 
-module.exports = router;
+export default router;
