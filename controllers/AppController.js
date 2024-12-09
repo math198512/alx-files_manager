@@ -14,5 +14,5 @@ export default class AppController {
       .then(([usersCount, filesCount]) => {
         res.status(200).json({ users: usersCount, files: filesCount });
       });
-  }
+  };
 }
