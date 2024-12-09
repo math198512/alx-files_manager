@@ -29,6 +29,14 @@ class DBClient {
   async nbUsers() {
     return this.client.db().collection('users').countDocuments();
   }
+
+  /**
+   * Retrieves the number of files in the database.
+   * @returns {Promise<Number>}
+   */
+  async nbFiles() {
+    return this.client.db().collection('files').countDocuments();
+  }
 }
 
 export const dbClient = new DBClient();
