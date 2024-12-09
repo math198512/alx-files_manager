@@ -1,6 +1,6 @@
-import mapRoutes from './routes';
+import express from 'express';
 
-const express = require('express');
+import mapRoutes from './routes';
 
 // Create Express application
 const app = express();
