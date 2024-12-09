@@ -1,13 +1,16 @@
 const express = require('express');
+const routes = require('./routes');
 
-// Create an Express application
+// Create Express application
 const app = express();
 
-// Define the port the server will run on
+// Get port from environment variable or use default 5000
 const PORT = process.env.PORT || 5000;
+
+// Load routes
+app.use('/', routes);
 
 // Start the server
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-  console.log(`Access the server at: http://localhost:${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
