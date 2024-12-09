@@ -1,4 +1,4 @@
-import router from './routes';
+import mapRoutes from './routes';
 
 const express = require('express');
 
@@ -8,7 +8,7 @@ const app = express();
 // Get port from environment variable or use default 5000
 const PORT = process.env.PORT || 5000;
 
-app.use(router);
+mapRoutes(app);
 
 // Start the server
 app.listen(PORT, () => {
