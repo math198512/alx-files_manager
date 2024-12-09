@@ -1,11 +1,12 @@
 // eslint-disable-next-line no-unused-vars
-import { Express } from 'express';
+import { Router } from 'express';
 import AppController from '../controllers/AppController';
 
-// Define routes
-const mapRoutes = (app) => {
-  app.get('/status', AppController.getStatus);
-  app.get('/stats', AppController.getStats);
-}
+const router = Router();
 
-export default mapRoutes;
+
+// Define routes
+router.get('/stats', AppController.getStats);
+router.get('/status', AppController.getStatus);
+
+export default router;
