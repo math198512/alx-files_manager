@@ -14,7 +14,7 @@ const postNew = async (req, res) => {
     res.status(400).json({ error: 'Missing password' });
     return;
   }
-  const user = await dbClient.collection('users').findOne({ email });
+  const user = await dbClient.findOne({ email });
 
   if (user) {
     res.status(400).json({ error: 'Already exist' });
