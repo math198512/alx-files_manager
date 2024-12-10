@@ -4,7 +4,6 @@ import AppController from '../controllers/AppController';
 
 const router = Router();
 
-
 // Define routes
 router.get('/stats', AppController.getStats);
 router.get('/status', AppController.getStatus);
