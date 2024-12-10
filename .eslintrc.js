@@ -21,7 +21,6 @@ module.exports = {
         'max-classes-per-file': 'off',
         'no-underscore-dangle': 'off',
         'no-console': 'off',
-        'import/no-named-as-default': 0,
         'no-shadow': 'off',
         'no-restricted-syntax': [
             'error',
