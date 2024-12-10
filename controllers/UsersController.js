@@ -3,22 +3,28 @@ import sha1 from 'sha1'
 
 
 const postNew = async (req, res) => {
-  const { email, password } = req.body;
-  if (email === undefined) return res.status(400).json({ error: 'Missing email' });
-  if (password === undefined) return res.status(400).json({ error: 'Missing password' });
-  try {
-    const hashedPass = sha1(password);
-    const result = await dbClient.insertOne('users', { email, password: hashedPass });
-    return res.status(201).json({ id: result.insertedId, email });
+  const email = req.body ? req.body.email : null;
+  const password = req.body ? req.body.password : null;
+
+  if (!email) {
+    res.status(400).json({ error: 'Missing email' });
+    return;
   }
-  catch (error) {
-    if (error.code === 11000) return res.status(400).json({ error: 'Already exist' });
-    console.log(error);
-    return res.status(500).json({ error: 'Internal server error' });
-  };
+  if (!password) {
+    res.status(400).json({ error: 'Missing password' });
+    return;
+  }
+  const user = await (await dbClient.usersCollection()).findOne({ email });
+
+  if (user) {
+    res.status(400).json({ error: 'Already exist' });
+    return;
+  }
+  const insertionInfo = await (await dbClient.usersCollection())
+    .insertOne({ email, password: sha1(password) });
+  const userId = insertionInfo.insertedId.toString();
+
+  res.status(201).json({ email, id: userId });
 }
-
-
-
 
 module.exports = { postNew };
