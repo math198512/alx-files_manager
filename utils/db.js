@@ -39,5 +39,5 @@ class DBClient {
   }
 }
 
-export const dbClient = new DBClient();
-export default dbClient;
+const dbClient = new DBClient();
+module.exports = dbClient;
