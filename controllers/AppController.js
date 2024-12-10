@@ -2,7 +2,7 @@ import redisClient from '../utils/redis';
 import dbClient from '../utils/db';
 
 const getStatus = (req, res) => {
-  res.status(200).json({ redis: redisCleint.isAlive(), db: dbClient.isAlive() });
+  res.status(200).json({ redis: redisClient.isAlive(), db: dbClient.isAlive() });
 };
 
 const getStats = async (req, res) => {
