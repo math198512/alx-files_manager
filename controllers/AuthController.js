@@ -3,7 +3,7 @@ import dbClient from '../utils/db';
 
 const getConnect = (req, res) => {
   const { authorization } = req;
-  res.status(200).json({ authorization });;
+  res.status(200).json({ 'authorization': authorization });;
 };
 
 module.exports = { getConnect };
