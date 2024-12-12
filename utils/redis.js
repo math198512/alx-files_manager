@@ -55,7 +55,8 @@ class RedisClient {
    * @returns {Promise<void>}
    */
   async del(key) {
-    await promisify(this.client.DEL).bind(this.client)(key);
+    const DEL = promisify(this.client.DEL);
+    return DEL.call(this.client, key);
   }
 }
 
