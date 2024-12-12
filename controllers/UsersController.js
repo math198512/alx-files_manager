@@ -32,7 +32,7 @@ const getMe = async (req, res) => {
   const token = req.headers['x-token'];
   const userId = await redisClient.get(`auth_${token}`);
   if (userId) {
-    const user = await dbClient.findOne('users', { _id: ObjectId(userId) });
+    const user = await (await dbClient.usersCollection()).findOne({ _id: ObjectId(userId) });
     if (user) {
       return res.status(200).json({ id: user._id, email: user.email });
     }
