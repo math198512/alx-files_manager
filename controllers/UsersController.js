@@ -27,9 +27,14 @@ const postNew = async (req, res) => {
 };
 
 const getMe = async (req, res) => {
-  const { user } = req;
-
-  await res.status(200).json({ email: user.email, id: user._id.toString() });
+  const token = req.headers['x-token'];
+  const userId = await redisClient.get(`auth_${token}`);
+  if (userId) {
+    const user = await dbClient.findOne('users', { _id: ObjectId(userId) });
+    if (user) {
+      return res.status(200).json({ id: user._id, email: user.email });
+    }
+  }
+  return res.status(401).json({ error: 'Unauthorized' });
 };
-
 module.exports = { postNew, getMe };
