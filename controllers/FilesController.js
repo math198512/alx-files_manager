@@ -8,8 +8,9 @@ const postUpload = async (req, res) => {
   if (userId) {
     const user = await (await dbClient.usersCollection()).findOne({ _id: ObjectId(userId) });
     if (user) {
-      const dataName = req.body.name;
-      return res.status(200).json({ dataName });
+      const fileName = req.body.name;
+      const fileType = req.body.type;
+      return res.status(200).json({ dataName, fileType });
     }
   }
   return res.status(401).json({ error: 'Unauthorized' });
