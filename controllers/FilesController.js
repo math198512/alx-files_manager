@@ -5,7 +5,10 @@ import { v4 as uuidv4 } from 'uuid';
 import { mkdir, writeFile } from 'fs';
 import { join as joinPath } from 'path';
 import mongoDBCore from 'mongodb/lib/core';
+import { ObjectId } from 'mongodb';
 import dbClient from '../utils/db';
+import redisClient from '../utils/redis';
+
 
 const VALID_FILE_TYPES = {
   folder: 'folder',
@@ -43,7 +46,14 @@ const isValidId = (id) => {
 };
 
 const postUpload = async (req, res) => {
-  const { user } = req;
+  const token = req.headers['x-token'];
+  const userIdRedis = await redisClient.get(`auth_${token}`);
+  if (userIdRedis) {
+    const user = await (await dbClient.usersCollection()).findOne({ _id: ObjectId(userIdRedis) });
+    if (!user) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+  }
   const name = req.body ? req.body.name : null;
   const type = req.body ? req.body.type : null;
   const parentId = req.body && req.body.parentId ? req.body.parentId : ROOT_FOLDER_ID;
