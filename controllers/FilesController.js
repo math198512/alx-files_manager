@@ -8,7 +8,7 @@ const postUpload = async (req, res) => {
   if (userId) {
     const user = await (await dbClient.usersCollection()).findOne({ _id: ObjectId(userId) });
     if (user) {
-      const dataName = req.data.name;
+      const dataName = req.body.name;
       return res.status(200).json({ dataName });
     }
   }
