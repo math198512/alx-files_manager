@@ -1,14 +1,15 @@
+/* eslint-disable import/no-named-as-default */
+/* eslint-disable no-unused-vars */
 import { tmpdir } from 'os';
 import { promisify } from 'util';
 import Queue from 'bull/lib/queue';
 import { v4 as uuidv4 } from 'uuid';
-import { mkdir, writeFile } from 'fs';
+import {
+  mkdir, writeFile, stat, realpath,
+} from 'fs';
 import { join as joinPath } from 'path';
 import mongoDBCore from 'mongodb/lib/core';
-import { ObjectId } from 'mongodb';
 import dbClient from '../utils/db';
-import redisClient from '../utils/redis';
-
 
 const VALID_FILE_TYPES = {
   folder: 'folder',
@@ -19,9 +20,11 @@ const ROOT_FOLDER_ID = 0;
 const DEFAULT_ROOT_FOLDER = 'files_manager';
 const mkDirAsync = promisify(mkdir);
 const writeFileAsync = promisify(writeFile);
+const statAsync = promisify(stat);
+const realpathAsync = promisify(realpath);
+const MAX_FILES_PER_PAGE = 20;
 const fileQueue = new Queue('thumbnail generation');
 const NULL_ID = Buffer.alloc(24, '0').toString('utf-8');
-
 const isValidId = (id) => {
   const size = 24;
   let i = 0;
@@ -46,14 +49,7 @@ const isValidId = (id) => {
 };
 
 const postUpload = async (req, res) => {
-  const token = req.headers['x-token'];
-  const userIdRedis = await redisClient.get(`auth_${token}`);
-  if (userIdRedis) {
-    const user = await (await dbClient.usersCollection()).findOne({ _id: ObjectId(userIdRedis) });
-    if (!user) {
-      return res.status(401).json({ error: 'Unauthorized' });
-    }
-  }
+  const { user } = req;
   const name = req.body ? req.body.name : null;
   const type = req.body ? req.body.type : null;
   const parentId = req.body && req.body.parentId ? req.body.parentId : ROOT_FOLDER_ID;
