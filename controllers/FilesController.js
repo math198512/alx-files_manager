@@ -10,7 +10,7 @@ const postUpload = async (req, res) => {
     if (user) {
       const fileName = req.body.name;
       const fileType = req.body.type;
-      return res.status(200).json({ dataName, fileType });
+      return res.status(200).json({ fileName, fileType });
     }
   }
   return res.status(401).json({ error: 'Unauthorized' });
